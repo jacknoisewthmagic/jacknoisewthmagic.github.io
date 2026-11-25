@@ -199,3 +199,19 @@ body { background:#fff; }
 @media(min-width:801px){.fb-video-toggle{top:28px;bottom:auto}}
 
 .fb-tabs{display:flex;gap:12px;margin:-20px 0 45px;flex-wrap:wrap}.fb-tabs a{border:1px solid #171717;border-radius:40px;padding:12px 22px;font-size:12px;letter-spacing:1px;color:#171717}.fb-tabs a:hover{background:#d45115;border-color:#d45115;color:#fff}.fb-cat{margin-bottom:70px;scroll-margin-top:100px}.fb-cat-title{font-size:13px;letter-spacing:1.4px;font-weight:500;border-top:1px solid #ddd;padding-top:22px;margin:0 0 35px}.fb-cat-title span{color:#d45115;margin-right:10px}.fb-cat .fb-projects{grid-template-columns:minmax(0,640px)}@media(max-width:800px){.fb-cat .fb-projects{grid-template-columns:1fr}}
+
+/* v4: full-width hero video, two project cards per row */
+.fb-hero-art{justify-content:stretch}
+.fb-hero-video{width:100%;height:100%;object-fit:cover;object-position:center}
+.fb-cat .fb-projects{grid-template-columns:repeat(2,minmax(0,1fr));gap:55px}
+@media(max-width:800px){
+.fb-hero-video{width:100%;height:100%;object-position:center}
+.fb-hero-art img{height:100%}
+.fb-cat .fb-projects{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.fb-image-well{height:190px;padding:12px;border-radius:16px}
+.fb-project h2{font-size:13px;letter-spacing:-.2px}
+.fb-project-name>span{font-size:16px}
+.fb-project p{font-size:11px;line-height:1.5;margin:10px 0}
+.fb-project small{font-size:7px;letter-spacing:.6px}
+.fb-project-name{padding-top:14px}
+}
