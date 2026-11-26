@@ -55,3 +55,42 @@
     requestAnimationFrame(tick);
   }
 })();
+
+/* v8: scroll animation (skipped when the visitor prefers reduced motion). */
+(() => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+  const home = document.querySelector('.fb-home');
+  if (!home) return;
+  const sel = '.fb-summary,.fb-section-head,.fb-tabs,.fb-cat-title,.fb-project,.fb-statement .fb-kicker,.fb-statement h2,.fb-statement>p:last-child,.fb-services .fb-kicker,.fb-services article,.fb-about>div,.fb-about-facts li,.fb-contact .fb-kicker,.fb-contact h2,.fb-contact .fb-email,.fb-socials,.jn-tool,.jn-glass-icon';
+  const els = [...document.querySelectorAll(sel)];
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('jn-in'); io.unobserve(e.target); }
+  }), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  els.forEach(el => {
+    const sibs = [...el.parentElement.children].filter(c => c.matches(sel));
+    el.style.setProperty('--d', (Math.min(sibs.indexOf(el), 3) * 0.12) + 's');
+    el.classList.add('jn-rv');
+    io.observe(el);
+  });
+  document.documentElement.classList.add('jn-anim');
+  /* Failsafe: never leave content hidden. */
+  setTimeout(() => els.forEach(el => { if (!el.classList.contains('jn-in') && el.getBoundingClientRect().top < innerHeight) el.classList.add('jn-in'); }), 1500);
+
+  /* Progress line + soft image parallax while scrolling. */
+  const bar = document.createElement('div'); bar.className = 'jn-scroll-bar'; document.body.append(bar);
+  const wells = [...document.querySelectorAll('.fb-project .fb-image-well')];
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    bar.style.setProperty('--p', max > 0 ? (scrollY / max).toFixed(4) : 0);
+    for (const w of wells) {
+      const r = w.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) continue;
+      const k = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
+      w.firstElementChild.style.setProperty('--py', (k * -22).toFixed(1) + 'px');
+    }
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
+})();
