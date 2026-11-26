@@ -61,16 +61,18 @@
   if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
   const home = document.querySelector('.fb-home');
   if (!home) return;
-  const sel = '.fb-summary,.fb-section-head,.fb-tabs,.fb-cat-title,.fb-project,.fb-statement .fb-kicker,.fb-statement h2,.fb-statement>p:last-child,.fb-services .fb-kicker,.fb-services article,.fb-about>div,.fb-about-facts li,.fb-contact .fb-kicker,.fb-form-intro>*,.fb-form-card,.fb-contact h2,.fb-contact .fb-email,.fb-socials,.jn-tool,.jn-glass-icon';
+  const sel = '.fb-hero-copy>*,.fb-summary,.fb-section-head,.fb-tabs,.fb-cat-title,.fb-project,.fb-statement .fb-kicker,.fb-statement h2,.fb-statement>p:last-child,.fb-services .fb-kicker,.fb-services article,.fb-about>div,.fb-about-facts li,.fb-contact .fb-kicker,.fb-form-intro>*,.fb-form-card,.fb-contact h2,.fb-contact .fb-email,.fb-socials,.jn-tool,.jn-glass-icon';
   const els = [...document.querySelectorAll(sel)];
-  const io = new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('jn-in'); io.unobserve(e.target); }
-  }), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  /* Replay: reveal when an element enters view, reset once it is fully out of view, in both scroll directions. */
+  const ioIn = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('jn-in'); }),
+    { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  const ioOut = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) e.target.classList.remove('jn-in'); }),
+    { threshold: 0 });
   els.forEach(el => {
     const sibs = [...el.parentElement.children].filter(c => c.matches(sel));
     el.style.setProperty('--d', (Math.min(sibs.indexOf(el), 3) * 0.12) + 's');
     el.classList.add('jn-rv');
-    io.observe(el);
+    ioIn.observe(el); ioOut.observe(el);
   });
   document.documentElement.classList.add('jn-anim');
   /* Failsafe: never leave content hidden. */

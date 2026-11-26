@@ -325,3 +325,4 @@ body { background:#fff; }
 @media (prefers-color-scheme: dark){.fb-form-intro>p:last-child{color:#b5b5b5}.fb-form-card{background:#171717}.fb-form-card input,.fb-form-card textarea{color:#f2f2f2;border-color:#333}.fb-form-card label span,.fb-form-note{color:#9a9a9a}.fb-form h2{color:#f2f2f2}}
 @media (prefers-color-scheme: dark){.fb-form-card label span{color:#d6d6d6}.fb-form-note{color:#c4c4c4}.fb-form-ok{color:#ff6a60;font-size:15px;font-weight:600}.fb-form-card input::placeholder,.fb-form-card textarea::placeholder{color:#8f8f8f}.fb-form-card input,.fb-form-card textarea{border-color:#4a4a4a}.fb-form-card .fb-pill:disabled{opacity:1;background:#8e1a14;color:#fff}}
 .fb-form-ok{font-weight:600}
+.jn-anim .fb-hero-copy>*{animation:none}
